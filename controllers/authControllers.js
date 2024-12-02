@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendEmail");
+const { login, register, updateUser, disableUser, resetPassword, verifyEmail } = require("../controllers/authControllers");
 
 //Enviroment variables
 const JWT_SECRET = process.env.JWT_SECRET;
