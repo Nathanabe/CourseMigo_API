@@ -2,6 +2,7 @@
     "dependencies": {
         "bcrypt": "^5.1.1",
         "body-parser": "^1.20.3",
+        "crypto": "^1.0.1",
         "dotenv": "^16.4.5",
         "express": "^4.21.1",
         "jsonwebtoken": "^9.0.2",
@@ -12,7 +13,6 @@
     "version": "1.0.0",
     "description": "\"Api for user and instructor authentication\"",
     "main": "app.js",
-    "devDependencies": {},
     "scripts": {
         "dev": "node app.js"
     },
