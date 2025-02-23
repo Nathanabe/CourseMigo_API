@@ -49,7 +49,7 @@ exports.sendVerificationEmail = async (req, res) => {
     const token = jwt.sign(
       { id: account._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" } // Token valid for 1 hour
+      { expiresIn: "10min" } // Token valid for 10 minutes
     );
 
     const verificationUrl = `${process.env.BASE_URL}/api/account/verify-email?token=${token}`;
