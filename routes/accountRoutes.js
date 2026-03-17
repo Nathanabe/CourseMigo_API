@@ -3,61 +3,42 @@ const router = express.Router();
 const accountController = require("../controllers/accountController");
 const { protect, authorize } = require("../middlewares/authMiddleware");
 const { validate } = require("../middlewares/validateMiddleware");
-const { updateAccountSchema, registerSchema, loginSchema } = require("../validators/accountValidator");
+const {
+  updateAccountSchema,
+  registerSchema,
+  loginSchema,
+  resetPasswordSchema,
+} = require("../validators/accountValidator");
 
-// -----------------------
-// Account Management Routes
-// -----------------------
-
-// Update account - protected & validated
+// Update account (user must be logged in)
 router.put(
   "/update/:id",
-  protect,                         // Auth middleware
-  validate(updateAccountSchema),   // Input validation
+  protect,                        // JWT auth
+  validate(updateAccountSchema),  // Validate input
   accountController.updateAccount
 );
 
-// Disable account - protected & role-based (only admin can disable)
+// Disable account (admin only)
 router.put(
   "/disable/:id",
   protect,
-  authorize("admin"),             // Only admins can disable accounts
+  authorize("admin"),
   accountController.disableAccount
 );
 
-// Send verification email - protected & rate-limited if needed
-router.post(
-  "/send-verification",
-  protect,
-  accountController.sendVerificationEmail
-);
+// Send verification email
+router.post("/send-verification", protect, accountController.sendVerificationEmail);
 
-// Verify email - no auth needed
+// Verify email
 router.get("/verify-email", accountController.verifyEmail);
 
-// -----------------------
-// Authentication Routes
-// -----------------------
+// Register new user
+router.post("/register", validate(registerSchema), accountController.register);
 
-// Register a new user
-router.post(
-  "/register",
-  validate(registerSchema),        // Validate registration input
-  accountController.register
-);
-
-// User login
-router.post(
-  "/login",
-  validate(loginSchema),           // Validate login input
-  accountController.login
-);
+// Login
+router.post("/login", validate(loginSchema), accountController.login);
 
 // Reset password
-router.post(
-  "/reset-password",
-  validate(loginSchema),           // You can create a separate reset schema if needed
-  accountController.resetPassword
-);
+router.post("/reset-password", validate(resetPasswordSchema), accountController.resetPassword);
 
 module.exports = router;
